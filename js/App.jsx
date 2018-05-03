@@ -8,7 +8,8 @@ import store from './store'
 import preload from '../data.json'
 
 // Components
-import Landing from './Landing'
+import AsyncRoute from './AsyncRoute'
+// import Landing from './Landing'
 import Search from './Search'
 import Details from './Details'
 
@@ -18,7 +19,15 @@ const App = () => (
   <Provider store={ store }>
     <div className='app'>
       <Switch>
-        <Route exact path='/' component={ Landing } />
+        <Route
+          exact path='/'
+          component={ (props) => (
+            <AsyncRoute
+              props={ props }
+              loadingPromise={ import('./Landing') }
+            />
+          )}
+        />
         <Route
           path='/search'
           component={(props) => <Search shows={ preload.shows} {...props} /> }

@@ -1,17 +1,12 @@
 # A Complete Intro to React
 
-Welcome to a complete intro to React! The site actual workshop material for this repo can be found [here][gh-page]. On the master branch you will find the completed project. On the start branch you will find the barebones boilerplater of the project designed to help you get started.
-
-## Contributing
-
-Please contribute, file issues, and make PRs. More than anything I'm sure there are typos abounding.
-
-## License
-
-MIT
-
 [gh-page]: http://btholt.github.io/complete-intro-to-react/
 
+## State
+
+Only keep things into state that have to do with re-renders. If some state property changes from true to false, for example, we need a re-render.
+
+Don't store whole React components into state, haha.
 
 ## Testing
 
@@ -264,3 +259,12 @@ Key: this requires Node specifically. Not Rails. Not Java. Some companies with n
 SSR by itself is not difficult to do.
 
 Normally have 2 webpack configs - one for dev and one for production. Not doing that today.
+
+**Code Splitting with Webpack**
+
+First reverted SSR w/HMR back to using webpack-dev-server.
+
+Code splitting, aka "chunking". Problem: server-side rendering + HMR + code splitting all at once doesn't work. It's a "pick 2" scenario. All 3 cannot exist together given how webpack works.
+
+What we want: only load the JS necessary for the page. So, when we hit Landing, only load the code for Landing.
+
