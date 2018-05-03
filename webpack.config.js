@@ -4,8 +4,9 @@ const webpack = require('webpack');
 module.exports = {
   context: __dirname,   // run webpack from root directory only
   entry: [
-    // orient webpack to run from server.js
-    "webpack-hot-middleware/client?path=__webpack_hmr&timeout=2000",
+    "react-hot-loader/patch",
+    "webpack-dev-server/client?http://localhost:8080",
+    "webpack/hot/only-dev-server",
     "./js/ClientApp.jsx"
   ],
   devtool: "cheap-eval-source-map", // inline sourcemaps in bundle
