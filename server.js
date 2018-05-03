@@ -12,6 +12,7 @@ const ReactDOMServer = require('react-dom/server')
 const ReactRouter    = require('react-router-dom')
 const _              = require('lodash')
 const fs             = require('fs')
+const compression    = require('compression')
 const App            = require('./js/App').default
 
 const StaticRouter   = ReactRouter.StaticRouter
@@ -23,6 +24,9 @@ const server = express()
 
 
 /* ================================ CONFIG ================================= */
+
+// gzip
+server.use(compression())
 
 // serve static assets from
 server.use('/public', express.static('./public'))

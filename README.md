@@ -268,3 +268,71 @@ Code splitting, aka "chunking". Problem: server-side rendering + HMR + code spli
 
 What we want: only load the JS necessary for the page. So, when we hit Landing, only load the code for Landing.
 
+**Building for production**
+
+Current bundle size is > 5 MB. Crazy. Webpack to the rescue. Let's disable some stuff when in production mode:
+
+```js
+if (process.env.NODE_ENV === 'production') {
+  config.entry   = './js/ClientApp.jsx'  // ignore HMR
+  config.devtool = false                 // disable sourcemaps
+  config.plugins = []                    // explitily ignore plugins
+}
+```
+
+Typically don't use gzip on a Node/Express server. It's better suited to use on Nginx, etc. But for demonstration, we use it in express.
+
+Then in terminal
+
+```
+NODE_ENV=production yarn build -- -p
+```
+
+The `-p` flag tells webpack to build for production, generate smallest bundle possible.
+
+Pull branch `v3-30` to catch up.
+
+**Preact**
+
+Branch `v3-31`
+
+The bulk of the minified & gzipped bundle is React itself - approx 43kB. So we can use Preact instead. It's the same API as React in 3kB! How?! No synthetic event systems (it uses DOM events). Not a must, but something to consider. Don't have to change any of our code, and it's just going to work.
+
+How do we use this? Webpack config again
+
+First: alias requests for one thing to another thing.
+
+```js
+resolve: {
+  extensions: ['.js', '.jsx', '.json'],
+  alias: {
+    'react': 'preact-compat',
+    'react-dom': 'preact-compat'
+  }
+},
+```
+
+Then, since some of preact needs to run through babal, we need to include it:
+
+```js
+module: {
+  rules: [
+    {
+      enforce: 'pre',
+      ...
+    },
+    {
+      test: /\.jsx?$/,
+      loader: 'babel-loader',
+      include: [
+        path.resolve('js'),
+        path.resolve('node_modules/preact-compat/src')
+      ]
+    }
+  ]
+}
+```
+
+Build was 226kB with React (un-gzipped). With Preact, it's down to 131kB. Gzipped we went from 76kB with React down to 39kB with Preact.
+
+There's another lib Inferno that does the same thing.

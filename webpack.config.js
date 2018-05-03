@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 
-module.exports = {
+const config = {
   context: __dirname,   // run webpack from root directory only
   entry: [
     "react-hot-loader/patch",
@@ -47,3 +47,11 @@ module.exports = {
     ]
   }
 }
+
+if (process.env.NODE_ENV === 'production') {
+  config.entry   = './js/ClientApp.jsx'  // ignore HMR
+  config.devtool = false                 // disable sourcemaps
+  config.plugins = []                    // explitily ignore plugins
+}
+
+module.exports = config
