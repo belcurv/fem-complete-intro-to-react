@@ -263,4 +263,6 @@ Key: this requires Node specifically. Not Rails. Not Java. Some companies with n
 
 SSR by itself is not difficult to do.
 
-Normally have 2 webpack configs - one for dev and one for production. Not doing that today.
+Normally have 2 webpack configs - one for dev and one for production. Not doing that today. Just a single webpack config to illustrate the process.
+
+Never develop w/server-side rendering. Use webpack-dev-server.
